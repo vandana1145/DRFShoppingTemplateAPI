@@ -1,17 +1,42 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, ListCreateAPIView
 from rest_framework import status
 from rest_framework import permissions
-from ShopApp.models import Category, Product, Choice
-from .serializers import CategorySerializer, ProductSerializer, ChoiceSerializer 
+from ShopApp.models import Category, Product
+from OrderApp.models import Cart, CartItem
+from user.models import User
+from .serializers import CategorySerializer, ProductSerializer, CartSerializer, CartItemSerializer, UserSerializer
 from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
 
 
 # Create your views here.
 
+class UserListAPI(ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    #permission_class = [IsAdminUser]
+
+    """queryset - The queryset that should be used for returning objects from this view. 
+    Typically, you must either set this attribute, or override the get_queryset() method. 
+    If you are overriding a view method, it is important that you call get_queryset() 
+    instead of accessing this property directly, as queryset will get evaluated once, 
+    and those results will be cached for all subsequent requests."""
+
+    # def list(self, request):
+    #     queryset = self.get_queryset()
+    #     serializer = UserSerializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+    # """get_queryset(self) returns the queryset that should be used for list views, 
+    # and that should be used as the base for lookups in detail views. """
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return user.accounts.all()
+        
 class CategoryListAPIView(ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -22,7 +47,7 @@ class CategoryListAPIView(ListAPIView):
 
 
 class ProductListAPIView(ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -32,32 +57,32 @@ class ProductListAPIView(ListAPIView):
     #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class ChoiceListAPIView(ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    queryset = Choice.objects.all()
-    serializer_class = ChoiceSerializer
+# class ChoiceListAPIView(ListAPIView):
+#     # permission_classes = [permissions.IsAuthenticated]
+#     queryset = Choice.objects.all()
+#     serializer_class = ChoiceSerializer
 
 
 class SingleCategoryRetrieveAPIView(RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
 class SingleProductRetrieveAPIView(RetrieveAPIView):
-    permission_class = [permissions.IsAuthenticated]
+    # permission_class = [permissions.IsAuthenticated]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
-class SingleChoiceRetrieveAPIView(RetrieveAPIView):
-    permission_class = [permissions.IsAuthenticated]
-    queryset = Choice.objects.all()
-    serializer_class = ChoiceSerializer 
+# class SingleChoiceRetrieveAPIView(RetrieveAPIView):
+#     # permission_class = [permissions.IsAuthenticated]
+#     queryset = Choice.objects.all()
+#     serializer_class = ChoiceSerializer 
 
 
 class CreateCategoryAPIView(CreateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -67,48 +92,88 @@ class CreateCategoryAPIView(CreateAPIView):
 
 
 class CreateProductAPIView(CreateAPIView):
-    permission_class = [permissions.IsAuthenticated]
+    # permission_class = [permissions.IsAuthenticated]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
-class CreateChoiceAPIView(CreateAPIView):
-    permission_class = [permissions.IsAuthenticated]
-    queryset = Choice.objects.all()
-    serializer_class = ChoiceSerializer
+# class CreateChoiceAPIView(CreateAPIView):
+#     # permission_class = [permissions.IsAuthenticated]
+#     queryset = Choice.objects.all()
+#     serializer_class = ChoiceSerializer
 
 
 class CategoryUpdateAPIView(UpdateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
 class ProductUpdateAPIView(UpdateAPIView):
-    permission_class = [permissions.IsAuthenticated]
+    # permission_class = [permissions.IsAuthenticated]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
-class ChoiceUpdateAPIView(UpdateAPIView):
-    permission_class = [permissions.IsAuthenticated]
-    queryset = Choice.objects.all()
-    serializer_class = ChoiceSerializer
+# class ChoiceUpdateAPIView(UpdateAPIView):
+#     # permission_class = [permissions.IsAuthenticated]
+#     queryset = Choice.objects.all()
+#     serializer_class = ChoiceSerializer
 
 
 class DeleteCategoryAPIView(DestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
 class DeleteProductAPIView(DestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
-class DeleteChoiceAPIView(DestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    queryset = Choice.objects.all()
-    serializer_class = ChoiceSerializer
+# class DeleteChoiceAPIView(DestroyAPIView):
+#     # permission_classes = [permissions.IsAuthenticated]
+#     queryset = Choice.objects.all()
+#     serializer_class = ChoiceSerializer
+
+
+class CreateCartAPI(CreateAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+
+class ViewCartAPI(ListAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+
+class UpdateCartAPI(UpdateAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+
+class DeleteCartAPI(DestroyAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+
+class CreateCartItemAPI(CreateAPIView):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
+
+
+class ViewCartItemAPI(ListAPIView):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
+
+
+class UpdateCartItemAPI(UpdateAPIView):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
+
+
+class DeleteCartItemAPI(DestroyAPIView):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
