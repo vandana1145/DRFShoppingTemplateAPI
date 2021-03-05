@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'OrderApp',
     'user',
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -54,11 +55,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'ShopProject.urls'
-
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
-}
 
 TEMPLATES = [
     {
@@ -127,3 +123,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10, 
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+}

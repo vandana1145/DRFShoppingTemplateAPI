@@ -12,7 +12,9 @@ from .views import (
     ProductUpdateAPIView,
     DeleteProductAPIView,
     UserListAPI,
+    SingleUserAPI,
     CreateCartAPI,
+    SingleCartAPI,
     ViewCartAPI,
     UpdateCartAPI,
     DeleteCartAPI, 
@@ -20,11 +22,6 @@ from .views import (
     ViewCartItemAPI,
     UpdateCartItemAPI,
     DeleteCartItemAPI,
-    # ChoiceListAPIView,
-    # SingleChoiceRetrieveAPIView,
-    # CreateChoiceAPIView,
-    # ChoiceUpdateAPIView,
-    # DeleteChoiceAPIView
 )
 
 urlpatterns = [
@@ -39,17 +36,14 @@ urlpatterns = [
     path('product/<int:pk>/update/', ProductUpdateAPIView.as_view()),
     path('product/<int:pk>/delete/', DeleteProductAPIView.as_view()),
     path('users/', UserListAPI.as_view()),
+    path('user/<int:pk>/', SingleUserAPI.as_view()),
     path('cart/create/', CreateCartAPI.as_view()),
-    path('cart/', ViewCartAPI.as_view()),
+    path('cart/<int:pk>/cartitems/', SingleCartAPI.as_view()),
+    path('carts/', ViewCartAPI.as_view()),
     path('cart/update/', UpdateCartAPI.as_view()),
     path('cart/delete/', DeleteCartAPI.as_view()),
     path('cartitem/create/', CreateCartItemAPI.as_view()),
-    path('cartitem/', ViewCartItemAPI.as_view()),
+    path('cartitems/', ViewCartItemAPI.as_view()),
     path('cartitem/update/', UpdateCartItemAPI.as_view()),
     path('cartitem/delete/', DeleteCartItemAPI.as_view()),
-    # path('choices', ChoiceListAPIView.as_view()),
-    # path('choice/<int:pk>/', SingleChoiceRetrieveAPIView.as_view()),
-    # path('choice/create', CreateChoiceAPIView.as_view()),
-    # path('choice/<int:pk>/update/', ChoiceUpdateAPIView.as_view()),
-    # path('choice/<int:pk>/delete/', DeleteChoiceAPIView.as_view())
 ]

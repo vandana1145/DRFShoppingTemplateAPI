@@ -11,6 +11,7 @@ class Cart(models.Model):
     created_at = models.DateTimeField(default=datetime.now)
     ORDER_STATUS = Choices(('PLACED', ('Order_PLaced')), ('DRAFTED', ('Order_in_Progress')))
     order_status = models.CharField(choices=ORDER_STATUS, default=ORDER_STATUS.DRAFTED, max_length=20)
+    #cartitem = models.ForeignKey(CartItem, on_delete=models.CASCADE)
 
     def get_cart_item(self):
         return (self.CartItem.product), (self.CartItem.quantity)
@@ -20,11 +21,14 @@ class Cart(models.Model):
 
 # Field.choices: The first element in each tuple is the actual value to be set on the model, and the second element is the human-readable name. 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, related_name='cart', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
-    ITEM_STATUS = Choices(('ADDTOBASKET', ('Add to Basket')), ('ORDERNOW', ('Place order now')))
-    item_status = models.CharField(choices=ITEM_STATUS, default=ITEM_STATUS.ADDTOBASKET, max_length=20)
+    # ITEM_STATUS = Choices(('ADDTOBASKET', ('Add to Basket')), ('ORDERNOW', ('Place order now')))
+    # item_status = models.CharField(choices=ITEM_STATUS, default=ITEM_STATUS.ADDTOBASKET, max_length=20)
+
+    def __str__(self):
+        return '%d: %s' %(self.quantity, self.product)
 
     def get_product_price(self):
         return self.product.price
