@@ -11,10 +11,12 @@ class Cart(models.Model):
     created_at = models.DateTimeField(default=datetime.now)
     ORDER_STATUS = Choices(('PLACED', ('Order_PLaced')), ('DRAFTED', ('Order_in_Progress')))
     order_status = models.CharField(choices=ORDER_STATUS, default=ORDER_STATUS.DRAFTED, max_length=20)
-    #cartitem = models.ForeignKey(CartItem, on_delete=models.CASCADE)
 
     def get_cart_item(self, CartItem):
         return (self.CartItem.product, self.CartItem.quantity)
+
+    def get_cart_items(self):
+        return self.cartitem_set.all()
 
     def get_order_status(self):
         return self.order_status

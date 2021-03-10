@@ -29,14 +29,17 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     #cart = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    #cart = serializers.StringRelatedField(many=True, read_only=True)
+    cart = serializers.StringRelatedField(many=True, read_only=True)
     #cart = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name="cart-detail")
     #cart = serializers.SlugRelatedField(many=True, read_only=True, slug_field="product")
-    cart_items = CartItemSerializer(many=True, read_only=True)
+    #cart_items = CartItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cart
-        fields = ['user', 'created_at', 'cart_items']
+        fields = ['user', 'created_at', 'cart']
+
+    def get_cart_items(self, instance):
+        return instance.get_cart_items()
 
 """
 Serializer relations:
