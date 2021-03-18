@@ -9,7 +9,7 @@ from django.test import TestCase
 pytestmark = pytest.mark.django_db
 
 class TestCategoryAPIViews(TestCase):
-    
+
     def setUp(self):
         self.myclient = APIClient()
 
@@ -30,6 +30,6 @@ class TestCategoryAPIViews(TestCase):
         #-status code
         assert response.json != None
 
-        assert len(response.json()) == 2
+        assert len(response.json()) == 4
 
         assert response.status_code == 200
